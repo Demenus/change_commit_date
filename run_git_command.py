@@ -13,8 +13,6 @@ def run_git_command(repo_path, command, background=False, shell=False):
         else:
             p = subprocess.Popen(command, cwd=repo_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                     text=True, shell=shell)
-            print(p.stdout.read())
-            print(p.stderr.read())
             p.wait()
     except subprocess.CalledProcessError as e:
         raise Exception(e.stderr)

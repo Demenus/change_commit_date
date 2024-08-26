@@ -20,8 +20,6 @@ class GitCommitDateChanger:
 
     def amend_commit_date(self, new_date):
         """Amends the commit with the new date."""
-        committer_date = f"GIT_COMMITTER_DATE=\"{new_date}\""
-        author_date = f"GIT_AUTHOR_DATE=\"{new_date}\""
         d = f"\"{new_date}\""
         amend_command = [
             "git", "commit", "--amend", "--no-edit", "--date", d
