@@ -1,6 +1,7 @@
 import os
-import subprocess
 import time
+
+from run_git_command import run_git_command
 
 
 class GitCommitDateChanger:
@@ -8,17 +9,6 @@ class GitCommitDateChanger:
 
     def __init__(self, repo_path):
         self.repo_path = repo_path
-
-    def run_git_command(self, command, background=False, shell=True):
-        """Runs a git command in the specified repository and returns the output."""
-        if not background:
-            result = subprocess.run(command, cwd=self.repo_path, check=True, stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    text=True, shell=shell)
-            return result.stdout.strip()
-        else:
-            return subprocess.Popen(command, cwd=self.repo_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                    text=True, shell=shell)
 
     def wait_for_file(self, filepath, timeout=10, interval=1):
         """Wait for a file to exist for up to `timeout` seconds, checking every `interval` seconds."""
@@ -31,12 +21,12 @@ class GitCommitDateChanger:
 
     def status(self):
         command = ["git", "status"]
-        self.run_git_command(command, shell=False)
+        run_git_command(command, shell=False)
 
     def start_interactive_rebase(self, commit_hash):
         """Starts an interactive rebase from the commit's parent."""
         rebase_command = ["git", "rebase", "-i", f"{commit_hash}^"]
-        self.run_git_command(rebase_command, background=True, shell=False)
+        run_git_command(rebase_command, background=True, shell=False)
 
     def modify_rebase_todo_file(self, commit_hash):
         """Modifies the rebase todo file to set the commit for editing."""
@@ -62,12 +52,12 @@ class GitCommitDateChanger:
             "sh", "-c",
             f'GIT_COMMITTER_DATE="{new_date}" GIT_AUTHOR_DATE="{new_date}" git commit --amend --no-edit'
         ]
-        self.run_git_command(amend_command, shell=False)
+        run_git_command(amend_command, shell=False)
 
     def continue_rebase(self):
         """Continues the rebase process."""
         continue_rebase_command = ["git", "rebase", "--continue"]
-        self.run_git_command(continue_rebase_command, shell=False)
+        run_git_command(continue_rebase_command, shell=False)
 
     def git_rebase_commit_date(self, commit_hash, new_date):
         """Changes the date of a commit specified by commit_hash to new_date in the specified repository."""
