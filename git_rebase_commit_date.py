@@ -1,5 +1,4 @@
 import os
-import time
 
 from run_git_command import run_git_command
 
@@ -21,6 +20,9 @@ class GitCommitDateChanger:
     def amend_commit_date(self, new_date):
         """Amends the commit with the new date."""
         d = f"\"{new_date}\""
+        os.environ.copy()
+        os.environ["GIT_COMMITTER_DATE"] = d
+        os.environ["GIT_AUTHOR_DATE"] = d
         amend_command = [
             "git", "commit", "--amend", "--no-edit", "--date", d
         ]

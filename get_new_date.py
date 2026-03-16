@@ -1,4 +1,5 @@
 import datetime
+import random
 
 def get_new_date(args):
     """Gets the new date based on the provided arguments."""
@@ -9,7 +10,7 @@ def get_new_date(args):
     elif args.todayAt:
         try:
             hour, minute = map(int, args.todayAt.split(':'))
-            today = datetime.datetime.now().replace(hour=hour, minute=minute, second=0, microsecond=0)
+            today = datetime.datetime.now().replace(hour=hour, minute=minute)
             return today.strftime("%a %b %d %H:%M:%S %Y %z")
         except ValueError:
             print("The format of --todayAt must be HH:MM in 24-hour format (e.g., '17:00').")
