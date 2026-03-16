@@ -16,7 +16,7 @@ def main():
         print(f"The specified path '{repo_path}' is not a valid directory.")
         return
 
-    new_date = get_new_date(args)
+    new_date = get_new_date(args, repo_path=repo_path, commit_hash=commit_hash)
     if new_date is None:
         return
 
